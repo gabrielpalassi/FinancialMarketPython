@@ -1,4 +1,4 @@
-# <img src="https://www.nicepng.com/png/full/52-527751_pics-for-chart-icon-black-and-white-png.png" height="50"></img> Financial Market Python
+# <img src="https://www.nicepng.com/png/full/52-527751_pics-for-chart-icon-black-and-white-png.png" height="40"></img> Financial Market Python
 
 Welcome! This repository contains Python programs and scripts related to financial markets, investment analysis, and trading. Whether you're a beginner or an experienced trader, you'll find a variety of tools and resources to help you in your financial endeavors.
 
