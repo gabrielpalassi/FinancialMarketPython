@@ -1,30 +1,42 @@
-legend.frameon: False
-legend.numpoints: 1
-legend.scatterpoints: 1
-xtick.direction: out
-ytick.direction: out
-axes.axisbelow: True
-font.family: sans-serif
-grid.linestyle: -
-lines.solid_capstyle: round
+# Legend settings
+legend.frameon: False           # Turn off legend frame
+legend.numpoints: 1             # Number of legend points
+legend.scatterpoints: 1         # Number of scatter points in legend
 
-axes.grid: True
-axes.edgecolor: white
-axes.linewidth: 0
-xtick.major.size: 0
-ytick.major.size: 0
-xtick.minor.size: 0
-ytick.minor.size: 0
+# Tick settings
+xtick.direction: out            # X-axis tick direction
+ytick.direction: out            # Y-axis tick direction
+xtick.major.size: 0             # Major tick size for X-axis
+ytick.major.size: 0             # Major tick size for Y-axis
+xtick.minor.size: 0             # Minor tick size for X-axis
+ytick.minor.size: 0             # Minor tick size for Y-axis
 
-text.color: 1
-axes.labelcolor: 1
-xtick.color: 1
-ytick.color: 1
-grid.color: 252525
+# Grid settings
+axes.grid: True                 # Display grid lines
+axes.edgecolor: white           # Color of axis lines
+axes.linewidth: 0               # Line width of axes
+grid.linestyle: -               # Grid line style
+grid.color: 252525              # Grid line color
 
-font.sans-serif: Arial, Liberation Sans, DejaVu Sans, Bitstream Vera Sans, sans-serif
-axes.prop_cycle: cycler('color', ['98f5ff', '00ffbf', 'ffff9f', 'ff7f7d', 'fc3468', 'f8f8ff'])
-image.cmap: RdPu
-figure.facecolor: 1e1e1e
-axes.facecolor: 1e1e1e
-savefig.facecolor: 1e1e1e
+# Font settings
+font.family: sans-serif         # Font family
+font.sans-serif: Arial
+
+# Line settings
+lines.linewidth: 0.8            # Line width for plot lines
+lines.solid_capstyle: round     # Cap style for solid lines
+
+# Text and label colors
+text.color: 1                   # Color of text
+axes.labelcolor: 1              # Color of axis labels
+xtick.color: 1                  # Color of X-axis ticks
+ytick.color: 1                  # Color of Y-axis ticks
+
+# Color cycle for plots
+axes.prop_cycle: cycler('color', ['3fb5ff', '00ffbf', 'ffff9f', 'ff7f7d', 'fc3468', 'f8f8ff'])
+
+# Image and figure background color
+image.cmap: RdPu                # Colormap for images
+figure.facecolor: 1e1e1e        # Background color of the figure
+axes.facecolor: 1e1e1e          # Background color of axes
+savefig.facecolor: 1e1e1e       # Background color when saving figures

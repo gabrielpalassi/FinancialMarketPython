@@ -11,16 +11,11 @@ import mplcursors
 # Overview
 #
 
-print('\n')
-print('#------------------------------------------------------------------------------#')
-print('\n')
-print('Overview:')
+print('\n#------------------------ Program Overview ------------------------#\n')
 print('The models reinvest the entirety of the hypothetical value on the first day of each month based on metrics from the previous month(s).')
 print('- Moving Average Method: Invests in IBOV if previous month\'s closing value was higher than the moving average. In CDI if not.')
 print('- Previous Month Performance Method: Invests in IBOV if it outperformed CDI last month, and vice-versa.')
-print('\n')
-print('#------------------------------------------------------------------------------#')
-print('\n')
+print('\n#------------------------------------------------------------------#\n')
 
 #
 # Inputs
@@ -55,7 +50,7 @@ def validate_ma(input_ma):
         return False
 
 # Loop to get valid start_date input
-while not start_date:
+while start_date is None:
     start_date = input('Please input the analysis start date (YYYY-MM-DD): ')
     if not validate_date(start_date):
         print('Invalid date format. Please use YYYY-MM-DD format.')
@@ -183,7 +178,7 @@ for index, date in enumerate(ibov_returns.index):
         choices.loc[date, 'Moving Average Method'] = ma_choice
 
 # Calculate cumulative returns for each method
-cumulative_returns = ((1 + returns).cumprod() - 1) * 100
+cumulative_returns = (1 + returns).cumprod() - 1
 
 #
 # Graph
@@ -198,13 +193,13 @@ performance, ax = plt.subplots(figsize=(14, 8))
 # Plot cumulative returns for different methods, customizing the appearance of each line
 ax.plot(cumulative_returns['CDI'], label='CDI')
 ax.plot(cumulative_returns['IBOV'], label='IBOV')
-ax.plot(cumulative_returns['Last Month Perf. Method'], label='Last Month Performance Method')
+ax.plot(cumulative_returns['Last Month Perf. Method'], label='Last Month Perf. Method')
 ax.plot(cumulative_returns['Moving Average Method'], label='Moving Average Method')
 
 # Customize axis labels and formatting
 ax.set_xlabel('Date')
 ax.set_ylabel('Cumulative Returns')
-ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}%'))
+ax.yaxis.set_major_formatter(ticker.PercentFormatter(1.0))
 
 # Set the plot title
 ax.set_title('Performance x Time')
