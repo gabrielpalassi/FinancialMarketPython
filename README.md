@@ -35,7 +35,7 @@ Here's an overview of the programs available in this repository:
   - Usage: `python markowitz-optimization.py`.
 
 ### Max Drawdown Calculator
-  - Description: Calculate the maximum drawdown of a portfolio or asset.
+  - Description: Calculate the maximum drawdown of an asset.
   - Usage: `python max-drawdown.py`
 
 ### Monthly Backtests
@@ -43,7 +43,7 @@ Here's an overview of the programs available in this repository:
   - Usage: `python monthly-backtests.py`
 
 ### Value at Risk (VaR) Calculator
-  - Description: Calculate the Value at Risk (VaR) of a portfolio or asset.
+  - Description: Calculate the Value at Risk (VaR) of an asset.
   - Usage: `python value-at-risk.py`
 
 ## Contributing and Contact
