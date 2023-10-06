@@ -35,7 +35,7 @@ Here's an overview of the programs available in this repository:
   - Usage: `python markowitz-optimization.py`.
 
 ### Max Drawdown Calculator
-  - Description: Calculate the maximum drawdown of a portfolio or asset.
+  - Description: Calculate the maximum drawdown of a portfolio or assets.
   - Usage: `python max-drawdown.py`
 
 ### Monthly Backtests

@@ -1,11 +1,12 @@
 from bcb import sgs
 import yfinance as yf
-from datetime import datetime
+from datetime import datetime, date
 import pandas as pd
 import pandas_ta as ta
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import mplcursors
+import logging
 
 #
 # Overview
@@ -21,6 +22,9 @@ print('\n#------------------------------------------------------------------#\n'
 # Inputs
 #
 
+# Set the logging level for yfinance to CRITICAL to reduce noise
+logging.getLogger('yfinance').setLevel(logging.CRITICAL)
+
 # Initialize variables for input
 start_date = None
 ma_months = None
@@ -29,11 +33,17 @@ ma_months = None
 def validate_date(input_date):
     try:
         # Check if the input matches the desired format (YYYY-MM-DD)
-        datetime.strptime(input_date, '%Y-%m-%d')
+        parsed_date = datetime.strptime(input_date, '%Y-%m-%d')
+        
         # Ensure the year, month, and day have the correct number of digits
         year, month, day = map(str, input_date.split('-'))
         if len(year) == 4 and len(month) == 2 and len(day) == 2:
-            return True
+            # Check if the parsed date is before today
+            if parsed_date.date() < date.today():
+                return True
+            else:
+                print("The start date should be before today's date.")
+                return False
         else:
             return False
     except:
@@ -53,7 +63,7 @@ def validate_ma(input_ma):
 while start_date is None:
     start_date = input('Please input the analysis start date (YYYY-MM-DD): ')
     if not validate_date(start_date):
-        print('Invalid date format. Please use YYYY-MM-DD format.')
+        print('Invalid date. Please use YYYY-MM-DD format.')
         start_date = None
 
 # Loop to get valid ma_months input
@@ -69,7 +79,7 @@ while ma_months is None:
 # CDI
 #
 
-# Fetch historical CDI data starting from June 1, 1994
+# Fetch historical CDI data
 cdi_data = sgs.get({'CDI': 11}, start=start_date)
 
 # Extract the 'CDI' column from the fetched data
@@ -95,7 +105,7 @@ first_month_cdi_returns = (cdi_month_closing.iloc[0] - cdi_month_opening.iloc[0]
 # IBOV
 #
 
-# Download historical data for the Bovespa index (^BVSP) starting from June 1, 1994
+# Download historical data for the Bovespa index (^BVSP)
 ibov_data = yf.download('^BVSP', start=start_date)
 
 # Extract the 'Adj Close' prices from the downloaded data
@@ -196,9 +206,7 @@ ax.plot(cumulative_returns['IBOV'], label='IBOV')
 ax.plot(cumulative_returns['Last Month Perf. Method'], label='Last Month Perf. Method')
 ax.plot(cumulative_returns['Moving Average Method'], label='Moving Average Method')
 
-# Customize axis labels and formatting
-ax.set_xlabel('Date')
-ax.set_ylabel('Cumulative Returns')
+# Customize axis formatting
 ax.yaxis.set_major_formatter(ticker.PercentFormatter(1.0))
 
 # Set the plot title

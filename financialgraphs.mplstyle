@@ -12,11 +12,11 @@ xtick.minor.size: 0             # Minor tick size for X-axis
 ytick.minor.size: 0             # Minor tick size for Y-axis
 
 # Grid settings
-axes.grid: True                 # Display grid lines
+axes.grid: true                 # Display grid lines
 axes.edgecolor: white           # Color of axis lines
 axes.linewidth: 0               # Line width of axes
 grid.linestyle: -               # Grid line style
-grid.color: 252525              # Grid line color
+grid.color: 232323              # Grid line color
 
 # Font settings
 font.family: sans-serif         # Font family
