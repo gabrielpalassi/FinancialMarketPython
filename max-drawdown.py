@@ -10,9 +10,9 @@ import logging
 #
 
 print('\n#------------------------ Program Overview ------------------------#\n')
-print('- This program downloads historical data for given assets and calculates their drawdowns.')
+print('- This program downloads historical data for a given portfolio or individual assets and calculates their drawdowns.')
 print('- It then plots the drawdown graphs, allowing interactive exploration.')
-print('- The maximum drawdown values are displayed on the graph.')
+print('- The maximum drawdown values are also displayed.')
 print('\n#------------------------------------------------------------------#\n')
 
 #
@@ -31,7 +31,6 @@ def validate_date(input_date):
     try:
         # Check if the input matches the desired format (YYYY-MM-DD)
         parsed_date = datetime.strptime(input_date, '%Y-%m-%d')
-        
         # Ensure the year, month, and day have the correct number of digits
         year, month, day = map(str, input_date.split('-'))
         if len(year) == 4 and len(month) == 2 and len(day) == 2:
@@ -53,7 +52,6 @@ def validate_assets(asset_inputs, start_date):
     for ticker in asset_tickers:
         # Remove leading/trailing spaces
         ticker = ticker.strip() 
-        print('\n')
         # Download asset data using yfinance
         asset_data = yf.download(ticker, start_date)['Adj Close']
         if len(asset_data) > 0:
@@ -81,8 +79,34 @@ while asset_tickers is None:
         print('No valid assets found. Please enter at least one valid asset ticker symbol.')
         asset_tickers = None
 
+# Initialize a dictionary to store asset weights for the portfolio
+asset_weights = {}
+
+# If calculating drawdown_type for a portfolio, gather asset weights
+if drawdown_type == 'portfolio':
+    while True:
+        # Initialize a variable to keep track of the total weight
+        total_weight = 0
+        for ticker in assets.keys():
+            while True:
+                try:
+                    weight = float(input(f'Enter the weight (as a percentage) of asset {ticker} in the portfolio: '))
+                    if weight < 0 or weight > 100:
+                        print('Invalid weight. Please enter a value between 0 and 100.')
+                    else:
+                        asset_weights[ticker] = weight
+                        total_weight += weight
+                        break
+                except ValueError:
+                    print('Invalid input. Please enter a valid number.')
+
+        if total_weight != 100:
+            print(f'Total weight is {total_weight}, but it should be 100. Please re-enter the weights.')
+        else:
+            break
+
 #
-# Asset
+# Assets
 #
 
 # Calculate the maximum drawdown for each asset and store the results in a dictionary
@@ -97,13 +121,21 @@ for ticker, asset_data in assets.items():
 # Portfolio
 #
 
-# Calculate the maximum drawdown of the portfolio
-combined_asset_data = sum(assets.values())
-portfolio_drawdowns = (combined_asset_data - combined_asset_data.cummax()) / combined_asset_data.cummax()
-portfolio_max_drawdown = portfolio_drawdowns.min()
+# Calculate the maximum drawdown of the portfolio if portfolio was selected
+if drawdown_type == 'portfolio':
+    # Initialize combined_drawdowns
+    combined_drawdowns = None
+    for ticker, asset_data in assets.items():
+        weighted_asset_data = asset_data * asset_weights[ticker]
+        if combined_drawdowns is None:
+            combined_drawdowns = weighted_asset_data
+        else:
+            combined_drawdowns += weighted_asset_data
 
-# Add the maximum drawdown of the portfolio to the max_drawdowns dictionary
-max_drawdowns['Portfolio'] = portfolio_max_drawdown
+    combined_drawdowns_max = combined_drawdowns.cummax()
+    combined_portfolio_drawdowns = (combined_drawdowns - combined_drawdowns_max) / combined_drawdowns_max
+    # Add the maximum drawdown of the portfolio to the max_drawdowns dictionary
+    max_drawdowns['Portfolio'] = combined_portfolio_drawdowns.min()
 
 #
 # Graph
@@ -123,9 +155,7 @@ if drawdown_type == 'assets':
 
 # Calculate and plot the drawdown of the portfolio if selected
 elif drawdown_type == 'portfolio':
-    combined_asset_data = sum(assets.values())
-    combined_drawdowns = (combined_asset_data - combined_asset_data.cummax()) / combined_asset_data.cummax()
-    ax.plot(combined_drawdowns, label='Portfolio')
+    ax.plot(combined_portfolio_drawdowns, label='Portfolio')
 
 # Format the y-axis as a percentage
 ax.yaxis.set_major_formatter(mplticker.PercentFormatter(1.0))

@@ -34,7 +34,6 @@ def validate_date(input_date):
     try:
         # Check if the input matches the desired format (YYYY-MM-DD)
         parsed_date = datetime.strptime(input_date, '%Y-%m-%d')
-        
         # Ensure the year, month, and day have the correct number of digits
         year, month, day = map(str, input_date.split('-'))
         if len(year) == 4 and len(month) == 2 and len(day) == 2:
@@ -54,7 +53,6 @@ def validate_ma(input_ma):
     try:
         ma = int(input_ma)
         if ma > 0:
-            print('\n')
             return True
     except:
         return False
