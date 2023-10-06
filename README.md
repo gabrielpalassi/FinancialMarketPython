@@ -1,4 +1,4 @@
-# <img src="https://www.nicepng.com/png/full/52-527751_pics-for-chart-icon-black-and-white-png.png" height="40"></img> Financial Market Python
+# <span style="font-size:35px">📈</span> Financial Market Python
 
 Welcome! This repository contains Python programs and scripts related to financial markets, investment analysis, and trading. Whether you're a beginner or an experienced trader, you'll find a variety of tools and resources to help you in your financial endeavors.
 
@@ -34,9 +34,9 @@ Here's an overview of the programs available in this repository:
   - Description: Optimize a portfolio of stocks using the Markowitz model.
   - Usage: `python markowitz-optimization.py`.
 
-### Max Drawdown Calculator
-  - Description: Calculate the maximum drawdown of a portfolio or assets.
-  - Usage: `python max-drawdown.py`
+### Drawdown Calculator
+  - Description: Calculate the drawdown of a portfolio or assets.
+  - Usage: `python drawdown.py`
 
 ### Monthly Backtests
   - Description: Perform backtests of trading strategies on a monthly basis.

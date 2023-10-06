@@ -22,9 +22,10 @@ print('\n#------------------------------------------------------------------#\n'
 # Set the logging level for yfinance to CRITICAL to reduce noise
 logging.getLogger('yfinance').setLevel(logging.CRITICAL)
 
-# Initialize variables for start date and asset tickers
+# Initialize variables for start date, asset tickers and asset weights
 start_date = None
 asset_tickers = None
+asset_weights = {}
 
 # Function to validate starting date input
 def validate_date(input_date):
@@ -79,9 +80,6 @@ while asset_tickers is None:
         print('No valid assets found. Please enter at least one valid asset ticker symbol.')
         asset_tickers = None
 
-# Initialize a dictionary to store asset weights for the portfolio
-asset_weights = {}
-
 # If calculating drawdown_type for a portfolio, gather asset weights
 if drawdown_type == 'portfolio':
     while True:
@@ -123,17 +121,17 @@ for ticker, asset_data in assets.items():
 
 # Calculate the maximum drawdown of the portfolio if portfolio was selected
 if drawdown_type == 'portfolio':
-    # Initialize combined_drawdowns
-    combined_drawdowns = None
+    # Initialize combined_asset_data
+    combined_asset_data = None
     for ticker, asset_data in assets.items():
         weighted_asset_data = asset_data * asset_weights[ticker]
-        if combined_drawdowns is None:
-            combined_drawdowns = weighted_asset_data
+        if combined_asset_data is None:
+            combined_asset_data = weighted_asset_data
         else:
-            combined_drawdowns += weighted_asset_data
+            combined_asset_data += weighted_asset_data
 
-    combined_drawdowns_max = combined_drawdowns.cummax()
-    combined_portfolio_drawdowns = (combined_drawdowns - combined_drawdowns_max) / combined_drawdowns_max
+    combined_asset_data_max = combined_asset_data.cummax()
+    combined_portfolio_drawdowns = (combined_asset_data - combined_asset_data_max) / combined_asset_data_max
     # Add the maximum drawdown of the portfolio to the max_drawdowns dictionary
     max_drawdowns['Portfolio'] = combined_portfolio_drawdowns.min()
 
