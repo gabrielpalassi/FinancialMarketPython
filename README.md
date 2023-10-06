@@ -1,6 +1,6 @@
 # <span style="font-size:35px">📈</span> Financial Market Python
 
-Welcome! This repository contains Python programs and scripts related to financial markets, investment analysis, and trading. Whether you're a beginner or an experienced trader, you'll find a variety of tools and resources to help you in your financial endeavors.
+Python programs tailored specifically for the world of financial markets, investment analysis, and trading. Whether you're a beginner or an experienced trader, you'll find a variety of tools and resources to help you in your financial endeavors.
 
 ## Getting Started
 
