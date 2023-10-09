@@ -1,4 +1,4 @@
-# <span style="font-size:35px">📈</span> Financial Market Python
+# 📈 Financial Market Python
 
 Python programs tailored specifically for the world of financial markets, investment analysis, and trading. Whether you're a beginner or an experienced trader, you'll find a variety of tools and resources to help you in your financial endeavors.
 
@@ -31,19 +31,19 @@ Now you're ready to use the programs!
 Here's an overview of the programs available in this repository:
 
 ### Markowitz Portfolio Optimization**
-  - Description: Optimize a portfolio of stocks using the Markowitz model.
+  - Description: Plot the efficient frontier and optimize a portfolio of stocks for highest sharpe ratio, highest return for a given risk or lowest risk for a given return.
   - Usage: `python markowitz-optimization.py`.
 
 ### Drawdown Calculator
-  - Description: Calculate the drawdown of a portfolio or assets.
+  - Description: Plot the drawdown graph and find out the maximum drawdown of individual assets or a portfolio.
   - Usage: `python drawdown.py`
 
 ### Monthly Backtests
-  - Description: Perform backtests of trading strategies on a monthly basis.
+  - Description: Perform monthly backtests of trading strategies to analyze their performance.
   - Usage: `python monthly-backtests.py`
 
 ### Value at Risk (VaR) Calculator
-  - Description: Calculate the Value at Risk (VaR) of an asset.
+  - Description: Calculate the Value at Risk (VaR) of individual assets or a portfolio at different confidence levels.
   - Usage: `python value-at-risk.py`
 
 ## Contributing and Contact
