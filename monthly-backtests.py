@@ -1,22 +1,23 @@
+import logging
+from datetime import datetime, date
 from bcb import sgs
 import yfinance as yf
-from datetime import datetime, date
-import pandas as pd
 import pandas_ta as ta
+import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import mplcursors
-import logging
+
 
 #
 # Overview
 #
 
-print('\n#------------------------ Program Overview ------------------------#\n')
+print('\n#----------------------------- Program Overview -----------------------------#\n')
 print('The models reinvest the entirety of the hypothetical value on the first day of each month based on metrics from the previous month(s).')
 print('- Moving Average Method: Invests in IBOV if previous month\'s closing value was higher than the moving average. In CDI if not.')
 print('- Previous Month Performance Method: Invests in IBOV if it outperformed CDI last month, and vice-versa.')
-print('\n#------------------------------------------------------------------#\n')
+print('\n#----------------------------------------------------------------------------#\n')
 
 #
 # Inputs
@@ -41,7 +42,7 @@ def validate_date(input_date):
             if parsed_date.date() < date.today():
                 return True
             else:
-                print("The start date should be before today's date.")
+                print('The start date should be before today\'s date.')
                 return False
         else:
             return False
@@ -204,10 +205,10 @@ ax.plot(cumulative_returns['IBOV'], label='IBOV')
 ax.plot(cumulative_returns['Last Month Perf. Method'], label='Last Month Perf. Method')
 ax.plot(cumulative_returns['Moving Average Method'], label='Moving Average Method')
 
-# Customize axis formatting
+# Format the axis and the title
 ax.yaxis.set_major_formatter(ticker.PercentFormatter(1.0))
-
-# Set the plot title
+plt.xlabel('Time')
+plt.ylabel('Performance')
 ax.set_title('Performance x Time')
 
 # Add a legend to the plot to distinguish the different lines and provide some info

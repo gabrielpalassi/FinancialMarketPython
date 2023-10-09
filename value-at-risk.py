@@ -1,25 +1,26 @@
+import logging
+from datetime import datetime, date
 import yfinance as yf
 import numpy as np
-from datetime import datetime, date
-import logging
-
-# Set the logging level for yfinance to CRITICAL to reduce noise
-logging.getLogger('yfinance').setLevel(logging.CRITICAL)
 
 #
 # Overview
 #
 
-print('\n#------------------------ Program Overview ------------------------#\n')
-print('- This program calculates the Value at Risk (VaR) for a given portfolio or individual assets using historical simulation.')
-print('- You can choose to calculate VaR for individual assets or for a portfolio, informing the weights.')
-print('- It then downloads historical data for the specified assets and calculates VaR at a given confidence level.')
-print('\n#------------------------------------------------------------------#\n')
+print('\n#----------------------------- Program Overview -----------------------------#\n')
+print('This program calculates the Value at Risk (VaR) for a given portfolio or assets using historical simulation.')
+print('You can choose to calculate VaR for individual assets or for a portfolio, informing the weights.')
+print('It then downloads historical data for the specified assets and calculates the VaR for a given confidence level.')
+print('\n#----------------------------------------------------------------------------#\n')
 
 #
 # Inputs
 #
 
+# Set the logging level for yfinance to CRITICAL to reduce noise
+logging.getLogger('yfinance').setLevel(logging.CRITICAL)
+
+# Initialize variables
 start_date = None
 asset_tickers = None
 asset_weights = {}
@@ -37,7 +38,7 @@ def validate_date(input_date):
             if parsed_date.date() < date.today():
                 return True
             else:
-                print("The start date should be before today's date.")
+                print('The start date should be before today\'s date.')
                 return False
         else:
             return False
@@ -64,6 +65,16 @@ while start_date is None:
     if not validate_date(start_date):
         print('Invalid date. Please use YYYY-MM-DD format.')
         start_date = None
+
+# Prompt the user for the confidence level (e.g., 95%)
+while confidence_level is None:
+    try:
+        confidence_level = float(input('Please enter the confidence level (e.g., 95 for 95%): ')) / 100.0
+        if confidence_level <= 0 or confidence_level >= 1:
+            print('Invalid confidence level. Please enter a value between 1 and 99.')
+            confidence_level = None
+    except ValueError:
+        print('Invalid input. Please enter a number between 1 and 99.')
 
 # Ask the user whether they want to calculate VaR for individual assets or for a portfolio
 calculation_type = input('Do you want to calculate VaR for individual assets or for a portfolio? (assets/portfolio): ')
@@ -101,16 +112,6 @@ if calculation_type == 'portfolio':
         else:
             break
 
-# Prompt the user for the confidence level (e.g., 95%)
-while confidence_level is None:
-    try:
-        confidence_level = float(input('Please enter the confidence level (e.g., 95 for 95%): ')) / 100.0
-        if confidence_level <= 0 or confidence_level >= 1:
-            print('Invalid confidence level. Please enter a value between 1 and 99.')
-            confidence_level = None
-    except ValueError:
-        print('Invalid input. Please enter a number between 1 and 99.')
-
 #
 # Assets
 #
@@ -118,11 +119,11 @@ while confidence_level is None:
 # Calculate the VaR for each asset if assets was selected
 if calculation_type == 'assets':
     for ticker, asset_data in assets.items():
-        returns = asset_data.resample("M").last().pct_change().dropna()
+        returns = asset_data.resample('M').last().pct_change().dropna()
         ordered_returns = np.sort(returns.values)
         alpha_returns_position = int((1 - confidence_level) * len(ordered_returns))
         var = abs(ordered_returns[alpha_returns_position] * 100)
-        print(f"The VaR at a {confidence_level * 100}% confidence level of {ticker} is: {var:.2f}%")
+        print(f'The VaR at a {confidence_level * 100}% confidence level of {ticker} is: {var:.2f}%')
 
 #
 # Portfolio
@@ -138,8 +139,8 @@ if calculation_type == 'portfolio':
             combined_asset_data = weighted_asset_data
         else:
             combined_asset_data += weighted_asset_data
-    returns = combined_asset_data.resample("M").last().pct_change().dropna()
+    returns = combined_asset_data.resample('M').last().pct_change().dropna()
     ordered_returns = np.sort(returns.values)
     alpha_returns_position = int((1 - confidence_level) * len(ordered_returns))
     var = abs(ordered_returns[alpha_returns_position] * 100)
-    print(f"The VaR at a {confidence_level * 100}% confidence level of the given portfolio is: {var:.2f}%")
+    print(f'The VaR at a {confidence_level * 100}% confidence level of the given portfolio is: {var:.2f}%')

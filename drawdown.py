@@ -1,19 +1,19 @@
+import logging
+from datetime import datetime, date
 import yfinance as yf
 import matplotlib.pyplot as plt
-from datetime import datetime, date
 import matplotlib.ticker as mplticker
 import mplcursors
-import logging
+
 
 #
 # Overview
 #
 
-print('\n#------------------------ Program Overview ------------------------#\n')
-print('- This program downloads historical data for a given portfolio or individual assets and calculates their drawdowns.')
-print('- It then plots the drawdown graphs, allowing interactive exploration.')
-print('- The maximum drawdown values are also displayed.')
-print('\n#------------------------------------------------------------------#\n')
+print('\n#----------------------------- Program Overview -----------------------------#\n')
+print('This program downloads historical data for a given portfolio or assets and calculates their drawdowns.')
+print('It then plots the drawdown graphs, allowing interactive exploration and displays the maximum drawdown.')
+print('\n#----------------------------------------------------------------------------#\n')
 
 #
 # Inputs
@@ -39,7 +39,7 @@ def validate_date(input_date):
             if parsed_date.date() < date.today():
                 return True
             else:
-                print("The start date should be before today's date.")
+                print('The start date should be before today\'s date.')
                 return False
         else:
             return False
@@ -155,15 +155,15 @@ if drawdown_type == 'assets':
 elif drawdown_type == 'portfolio':
     ax.plot(combined_portfolio_drawdowns, label='Portfolio')
 
-# Format the y-axis as a percentage
+# Format the axis and the title
 ax.yaxis.set_major_formatter(mplticker.PercentFormatter(1.0))
-
-# Set title for the graph
+plt.xlabel('Time')
+plt.ylabel('Drawdown')
 ax.set_title('Drawdown x Time')
 
 # Add a legend to the graph with the maximum drawdown values for each asset and the portfolio
-legend_text = "\n".join([f"{ticker}: {max_drawdown:.2%}" for ticker, max_drawdown in max_drawdowns.items()])
-plt.legend(title=f'Max Drawdowns:\n{legend_text}')
+legend_text = '\n'.join([f'{ticker}: {max_drawdown:.2%}' for ticker, max_drawdown in max_drawdowns.items()]) + '\n'
+plt.legend(title=f'Max. Drawdowns:\n\n{legend_text}')
 
 # Enable cursor interaction on the graph
 mplcursors.cursor()
