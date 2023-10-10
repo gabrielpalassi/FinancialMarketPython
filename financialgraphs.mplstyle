@@ -23,7 +23,7 @@ font.family: sans-serif         # Font family
 font.sans-serif: Arial
 
 # Line settings
-lines.linewidth: 0.8            # Line width for plot lines
+lines.linewidth: 0.9            # Line width for plot lines
 lines.solid_capstyle: round     # Cap style for solid lines
 
 # Text and label colors

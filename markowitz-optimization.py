@@ -130,13 +130,13 @@ while calculation_type not in ['sharpe', 'risk', 'return']:
 if calculation_type == 'risk':
     while True:
         try:
-            risk_tolerance = float(input(f'Enter your desired risk level (e.g., 0.10 for 10%) (between {minimum_risk:.2} and {maximum_risk:.2}): '))
+            risk_tolerance = float(input(f'Enter your desired risk level (e.g., 0.10 for 10%) (between {minimum_risk:.2f} and {maximum_risk:.2f}): '))
             # Check if the risk_tolerance is within the desired range
             if minimum_risk <= risk_tolerance <= maximum_risk:
                 # Break the loop if the input is successfully converted to a float and falls within the range
                 break
             else:
-                print(f'Risk tolerance must be between {minimum_risk:.2} and {maximum_risk:.2}.')
+                print(f'Risk tolerance must be between {minimum_risk:.2f} and {maximum_risk:.2f}.')
         except ValueError:
             print('Invalid input. Please enter a valid number for risk.')
 
@@ -144,12 +144,12 @@ if calculation_type == 'risk':
 if calculation_type == 'return':
     while True:
         try:
-            expected_return = float(input(f'Enter your desired expected return (e.g., 0.10 for 10%) (between {minimum_risk_return:.2} and {maximum_return:.2}): '))
+            expected_return = float(input(f'Enter your desired expected return (e.g., 0.10 for 10%) (between {minimum_risk_return:.2f} and {maximum_return:.2f}): '))
             if minimum_risk_return <= expected_return <= maximum_return:
                 # Break the loop if the input is successfully converted to a float
                 break
             else:
-                print(f'Expected return must be between {minimum_risk_return:.2} and {maximum_return:.2}.')
+                print(f'Expected return must be between {minimum_risk_return:.2f} and {maximum_return:.2f}.')
         except ValueError:
             print('Invalid input. Please enter a valid number for return.')
 
@@ -211,24 +211,24 @@ for target_return in target_returns:
 plt.style.use('./financialgraphs.mplstyle')
 
 # Create a subplot for the drawdown graph
-markowitz_optimization, ax = plt.subplots(figsize=(14, 8))
+markowitz_optimization, axes = plt.subplots(figsize=(14, 8))
 
 # Plot the efficient frontier line
-ax.plot(efficient_frontier_volatility, efficient_frontier_return, label='Efficient Frontier')
+axes.plot(efficient_frontier_volatility, efficient_frontier_return, label='Efficient Frontier')
 
 # Plot a point for the optimal and maximum sharpe ratio portfolios on the graph
 if calculation_type == 'sharpe':
-    ax.scatter(metrics(optimal_weights)[1], metrics(optimal_weights)[0], marker='o', label='Optimal Portfolio')
+    axes.scatter(metrics(optimal_weights)[1], metrics(optimal_weights)[0], marker='o', label='Optimal Portfolio')
 else:
-    ax.scatter(metrics(sharpe_ratio_optimal_weights)[1], metrics(sharpe_ratio_optimal_weights)[0], marker='o', label='Max. Sharpe Ratio')
-    ax.scatter(metrics(optimal_weights)[1], metrics(optimal_weights)[0], marker='o', label='Optimal Portfolio')
+    axes.scatter(metrics(sharpe_ratio_optimal_weights)[1], metrics(sharpe_ratio_optimal_weights)[0], marker='o', label='Max. Sharpe Ratio')
+    axes.scatter(metrics(optimal_weights)[1], metrics(optimal_weights)[0], marker='o', label='Optimal Portfolio')
 
 # Format the axis and the title
-ax.xaxis.set_major_formatter(mplticker.PercentFormatter(1.0))
-ax.yaxis.set_major_formatter(mplticker.PercentFormatter(1.0))
+axes.xaxis.set_major_formatter(mplticker.PercentFormatter(1.0))
+axes.yaxis.set_major_formatter(mplticker.PercentFormatter(1.0))
 plt.xlabel('Volatility')
 plt.ylabel('Return')
-ax.set_title('Anual Expected Return x Volatility')
+axes.set_title('Anual Expected Return x Volatility')
 
 # Add a legend to the graph with the maximum drawdown values for each asset and the portfolio
 legend_text = '\n'.join([f'{metric}: {metrics(optimal_weights)[i]:.2%}' for i, metric in enumerate(['Expected Return','Volatility','Sharpe Ratio'])]) + '\n\n'
@@ -236,7 +236,13 @@ legend_text = legend_text + '\n'.join([f'{asset}\'s weight: {i:.2%}' for asset, 
 plt.legend(title=f'{legend_text}')
 
 # Enable cursor interaction on the graph
-mplcursors.cursor()
+cursor = mplcursors.cursor()
+@cursor.connect("add")
+def on_add(sel):
+    sel.annotation.get_bbox_patch().set(fc='gray', alpha=0.8)
+    sel.annotation.get_bbox_patch().set_edgecolor('gray')
+    sel.annotation.arrow_patch.set_color('white')
+    sel.annotation.arrow_patch.set_arrowstyle('-')
 
 # Display the graph
 plt.show()

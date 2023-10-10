@@ -142,30 +142,36 @@ if drawdown_type == 'portfolio':
 plt.style.use('./financialgraphs.mplstyle')
 
 # Create a subplot for the drawdown graph
-drawdown, ax = plt.subplots(figsize=(14, 8))
+drawdown, axes = plt.subplots(figsize=(14, 8))
 
 # Plot the drawdown data for each asset on the graph if individual assets selected
 if drawdown_type == 'assets':
     for ticker, asset_data in assets.items():
         drawdowns = (asset_data - asset_data.cummax()) / asset_data.cummax()
-        ax.plot(drawdowns, label=ticker)
+        axes.plot(drawdowns, label=ticker)
 
 # Calculate and plot the drawdown of the portfolio if selected
 elif drawdown_type == 'portfolio':
-    ax.plot(combined_portfolio_drawdowns, label='Portfolio')
+    axes.plot(combined_portfolio_drawdowns, label='Portfolio')
 
 # Format the axis and the title
-ax.yaxis.set_major_formatter(mplticker.PercentFormatter(1.0))
+axes.yaxis.set_major_formatter(mplticker.PercentFormatter(1.0))
 plt.xlabel('Time')
 plt.ylabel('Drawdown')
-ax.set_title('Drawdown x Time')
+axes.set_title('Drawdown x Time')
 
 # Add a legend to the graph with the maximum drawdown values for each asset and the portfolio
 legend_text = '\n'.join([f'{ticker}: {max_drawdown:.2%}' for ticker, max_drawdown in max_drawdowns.items()]) + '\n'
 plt.legend(title=f'Max. Drawdowns:\n\n{legend_text}')
 
 # Enable cursor interaction on the graph
-mplcursors.cursor()
+cursor = mplcursors.cursor()
+@cursor.connect("add")
+def on_add(sel):
+    sel.annotation.get_bbox_patch().set(fc='gray', alpha=0.8)
+    sel.annotation.get_bbox_patch().set_edgecolor('gray')
+    sel.annotation.arrow_patch.set_color('white')
+    sel.annotation.arrow_patch.set_arrowstyle('-')
 
 # Display the graph
 plt.show()
