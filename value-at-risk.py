@@ -123,7 +123,7 @@ if calculation_type == 'assets':
         ordered_returns = np.sort(returns.values)
         alpha_returns_position = int((1 - confidence_level) * len(ordered_returns))
         var = abs(ordered_returns[alpha_returns_position] * 100)
-        print(f'The VaR at a {confidence_level * 100}% confidence level of {ticker} is: {var:.2f}%')
+        print(f'The VaR at a {confidence_level * 100}% confidence level for {ticker} is: {var:.2f}%')
 
 #
 # Portfolio
@@ -143,4 +143,4 @@ if calculation_type == 'portfolio':
     ordered_returns = np.sort(returns.values)
     alpha_returns_position = int((1 - confidence_level) * len(ordered_returns))
     var = abs(ordered_returns[alpha_returns_position] * 100)
-    print(f'The VaR at a {confidence_level * 100}% confidence level of the given portfolio is: {var:.2f}%')
+    print(f'The VaR at a {confidence_level * 100}% confidence level for the given portfolio is: {var:.2f}%')

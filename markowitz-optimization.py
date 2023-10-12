@@ -208,7 +208,7 @@ for target_return in target_returns:
 #
 
 # Set the style for the graph using a custom style file
-plt.style.use('./financialgraphs.mplstyle')
+plt.style.use('./mplstyles/financialgraphs.mplstyle')
 
 # Create a subplot for the drawdown graph
 markowitz_optimization, axes = plt.subplots(figsize=(14, 8))

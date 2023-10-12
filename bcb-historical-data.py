@@ -10,8 +10,8 @@ import mplcursors
 #
 
 print('\n#----------------------------- Program Overview -----------------------------#\n')
-print('This program retrieves and graphs financial data from the Brazilian Central Bank (BCB).')
-print('- SELIC (Sistema Especial de Liquidação e Custódia): SELIC is the Brazilian Central Bank\'s benchmark interest rate.')
+print('This program retrieves and graphs hirstorical financial data from the Brazilian Central Bank (BCB).')
+print('- Selic (Sistema Especial de Liquidação e Custódia): Selic is the Brazilian Central Bank\'s benchmark interest rate.')
 print('- IPCA (Índice Nacional de Preços ao Consumidor Amplo): IPCA represents the official inflation index in Brazil.')
 print('- IGP-M (Índice Geral de Preços do Mercado): IGP-M is another important inflation index in Brazil.')
 print('- Currencies: The program also tracks the exchange rates of USD and EUR against the Brazilian Real (BRL).')
@@ -55,8 +55,8 @@ while start_date is None:
 # Data
 #
 
-# Get SELIC data
-selic = sgs.get({'SELIC': 432}, start=start_date)
+# Get Selic data
+selic = sgs.get({'Selic': 432}, start=start_date)
 # Get IPCA and IGP-M inflation data
 inflation = sgs.get({'IPCA': 433, 'IGP-M': 189}, start=start_date)
 # Get currency exchange rates for USD and EUR
@@ -67,22 +67,22 @@ currencies = currency.get(['USD', 'EUR'], start=start_date, end=date.today(), si
 #
 
 # Use a custom Matplotlib style from 'financialgraphs.mplstyle'
-plt.style.use('./financialgraphs.mplstyle')
+plt.style.use('./mplstyles/financialgraphs.mplstyle')
 
 # Create a subplot with three axes for different financial data
 graphs, axes = plt.subplots(nrows=3, figsize=(14, 8), sharex=True)
 
-# Plot SELIC data on the first subplot
-axes[0].plot(selic, label='SELIC')
+# Plot Selic data on the first subplot
+axes[0].plot(selic, label='Selic')
 axes[0].yaxis.set_major_formatter(ticker.PercentFormatter())
-axes[0].set_ylabel('SELIC')
-axes[0].legend(title=f'Current SELIC: {selic["SELIC"].iloc[-1]}')
+axes[0].set_ylabel('Selic')
+axes[0].legend(title=f'Current Selic: {selic["Selic"].iloc[-1]}')
 
 # Plot IPCA and IGP-M inflation data on the second subplot
 axes[1].plot(inflation['IPCA'], label='IPCA')
 axes[1].plot(inflation['IGP-M'], label='IGP-M')
 axes[1].yaxis.set_major_formatter(ticker.PercentFormatter())
-axes[1].set_ylabel('Inflation Rate')
+axes[1].set_ylabel('Monthly Inflation Rate')
 axes[1].legend(title=f'Last IPCA: {inflation["IPCA"].iloc[-2]}\nLast IGP-M: {inflation["IGP-M"].iloc[-1]}')
 
 # Define a custom formatter for currency data

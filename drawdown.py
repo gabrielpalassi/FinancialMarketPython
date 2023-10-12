@@ -139,7 +139,7 @@ if drawdown_type == 'portfolio':
 #
 
 # Set the style for the graph using a custom style file
-plt.style.use('./financialgraphs.mplstyle')
+plt.style.use('./mplstyles/financialgraphs.mplstyle')
 
 # Create a subplot for the drawdown graph
 drawdown, axes = plt.subplots(figsize=(14, 8))

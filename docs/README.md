@@ -43,8 +43,12 @@ Here's an overview of the tools available in this repository (further explanatio
   - Usage: `python value-at-risk.py`
 
 ### Brazilian Central Bank Historical Data
-  - Description: This program provides historical data from the Brazilian Central Bank. It allows users to access and analyze various economic and financial indicators(interest rates, inflation rates and exchange rates).
+  - Description: This program provides historical data from the Brazilian Central Bank. It allows users to access and analyze various economic and financial indicators (interest rates, inflation rates and exchange rates).
   - Usage: `python bcb-historical-data.py`
+
+### Brazilian Central Bank Market Expectations Data
+  - Description: This program provides market expectations data gathered by the Brazilian Central Bank. It allows users to access and analyze various economic and financial indicators (interest rates, inflation rates and exchange rates).
+  - Usage: `python bcb-market-expectations.py`
 
 ### Last Month Performance Method Backtest
   - Description: The Last Month Performance Method Backtest program is designed to evaluate the performance of an investment strategy based on the returns of assets in the last month. This model invests in IBOV if it outperformed CDI last month, and vice-versa.
@@ -59,8 +63,3 @@ Here's an overview of the tools available in this repository (further explanatio
 We welcome contributions to this repository. If you have ideas for new programs, bug fixes, or improvements, please open an issue or submit a pull request.
 
 If you have any questions, suggestions, or feedback, feel free to reach out to me at my [e-mail](mailto:gabrielpalassi@hotmail.com).
-
-## License
-
-This project is licensed under the GPT-3 License. For details, please see the [LICENSE](LICENSE) file.
-

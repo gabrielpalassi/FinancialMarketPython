@@ -172,7 +172,7 @@ cumulative_returns = (1 + returns).cumprod() - 1
 #
 
 # Set the graph's style
-plt.style.use('./financialgraphs.mplstyle')
+plt.style.use('./mplstyles/financialgraphs.mplstyle')
 
 # Create a new figure and axis with a specified figure size
 performance, axes = plt.subplots(figsize=(14, 8))
