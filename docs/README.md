@@ -35,25 +35,46 @@ python name-of-program.py
 Here's an overview of the tools available in this repository (further explanations are available when running the programs):
 
 ### Markowitz Portfolio Optimization
-  - Plot the efficient frontier and optimize a portfolio of stocks for highest sharpe ratio, highest return for a given risk or lowest risk for a given return.
+---
+Plot the efficient frontier and optimize a portfolio of stocks for highest sharpe ratio, highest return for a given risk or lowest risk for a given return.
+
+<img src="./images/markowitz-optimization.png" height="350">
 
 ### Drawdown Calculator
-  - Plot the drawdown graph and find out the maximum drawdown of individual assets or a portfolio.
+---
+Plot the drawdown graph and find out the maximum drawdown of individual assets or a portfolio.
+
+<img src="./images/drawdown.png" height="350">
 
 ### Value at Risk (VaR) Calculator
-  - Calculate the Value at Risk (VaR) of individual assets or a portfolio at different confidence levels.
+---
+Calculate the Value at Risk (VaR) of individual assets or a portfolio at different confidence levels.
+
+<img src="./images/value-at-risk.png" height="350">
 
 ### Brazilian Central Bank Historical Data
-  - This program provides historical data from the Brazilian Central Bank. It allows users to access and analyze various economic and financial indicators (interest rates, inflation rates and exchange rates).
+---
+This program provides historical data from the Brazilian Central Bank. It allows users to access and analyze various economic and financial indicators (interest rates, inflation rates and exchange rates).
+
+<img src="./images/bcb-historical-data.png" height="350">
 
 ### Brazilian Central Bank Market Expectations Data
-  - This program provides market expectations data gathered by the Brazilian Central Bank. It allows users to access and analyze various economic and financial indicators (interest rates, inflation rates and exchange rates).
+---
+This program provides market expectations data gathered by the Brazilian Central Bank. It allows users to access and analyze various economic and financial indicators (interest rates, inflation rates and exchange rates).
+
+<img src="./images/bcb-market-expectations.png" height="350">
 
 ### Last Month Performance Method Backtest
-  - The Last Month Performance Method Backtest program is designed to evaluate the performance of an investment strategy based on the returns of assets in the last month. This model invests in IBOV if it outperformed CDI last month, and vice-versa.
+---
+The Last Month Performance Method Backtest program is designed to evaluate the performance of an investment strategy based on the returns of assets in the last month. This model invests in IBOV if it outperformed CDI last month, and vice-versa.
+
+<img src="./images/lmp-method-backtest.png" height="350">
 
 ### Moving Average Method Backtest
-  - The Moving Average Method Backtest program is a tool for assessing the performance of an investment strategy that relies on a moving average. This model invests in IBOV if the previous month's closing value was higher than the moving average. In CDI if not.
+---
+The Moving Average Method Backtest program is a tool for assessing the performance of an investment strategy that relies on a moving average. This model invests in IBOV if the previous month's closing value was higher than the moving average. In CDI if not.
+
+<img src="./images/ma-method-backtest.png" height="350">
 
 ## Contributing and Contact
 
