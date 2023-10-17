@@ -13,9 +13,9 @@ import mplcursors
 print('\n#----------------------------- Program Overview -----------------------------#\n')
 print('This program retrieves and graphs hirstorical financial data from the Brazilian Central Bank (BCB).')
 print('- Selic (Sistema Especial de Liquidação e Custódia): Selic is the Brazilian Central Bank\'s benchmark interest rate.')
+print('- Currencies: The program also tracks the exchange rates of USD and EUR against the Brazilian Real (BRL).')
 print('- IPCA (Índice Nacional de Preços ao Consumidor Amplo): IPCA represents the official inflation index in Brazil.')
 print('- IGP-M (Índice Geral de Preços do Mercado): IGP-M is another important inflation index in Brazil.')
-print('- Currencies: The program also tracks the exchange rates of USD and EUR against the Brazilian Real (BRL).')
 print('\n#----------------------------------------------------------------------------#\n')
 
 #
