@@ -20,13 +20,6 @@ print('\n#----------------------------------------------------------------------
 # Set the logging level for yfinance to CRITICAL to reduce noise
 logging.getLogger('yfinance').setLevel(logging.CRITICAL)
 
-# Initialize variables
-start_date = None
-asset_tickers = None
-asset_weights = {}
-confidence_level = None
-
-# Function to validate starting date input
 def validate_date(input_date):
     try:
         # Check if the input matches the desired format (YYYY-MM-DD)
@@ -45,7 +38,27 @@ def validate_date(input_date):
     except:
         return False
 
-# Function to validate and download asset data
+start_date = None
+while start_date is None:
+    start_date = input('Please input the analysis start date (YYYY-MM-DD): ')
+    if not validate_date(start_date):
+        print('Invalid date. Please use YYYY-MM-DD format.')
+        start_date = None
+
+confidence_level = None
+while confidence_level is None:
+    try:
+        confidence_level = float(input('Please enter the confidence level (e.g., 95 for 95%): ')) / 100.0
+        if confidence_level <= 0 or confidence_level >= 1:
+            print('Invalid confidence level. Please enter a value between 1 and 99.')
+            confidence_level = None
+    except ValueError:
+        print('Invalid input. Please enter a number between 1 and 99.')
+
+calculation_type = input('Do you want to calculate VaR for individual assets or for a portfolio? (assets/portfolio): ')
+while calculation_type not in ['assets', 'portfolio']:
+    calculation_type = input('Invalid input. Please enter "assets" or "portfolio": ')
+
 def validate_assets(asset_inputs, start_date):
     assets = {}
     asset_tickers = asset_inputs.split(',')
@@ -59,29 +72,7 @@ def validate_assets(asset_inputs, start_date):
             assets[ticker] = asset_data
     return assets
 
-# Prompt the user for the start date until a valid one is provided
-while start_date is None:
-    start_date = input('Please input the analysis start date (YYYY-MM-DD): ')
-    if not validate_date(start_date):
-        print('Invalid date. Please use YYYY-MM-DD format.')
-        start_date = None
-
-# Prompt the user for the confidence level (e.g., 95%)
-while confidence_level is None:
-    try:
-        confidence_level = float(input('Please enter the confidence level (e.g., 95 for 95%): ')) / 100.0
-        if confidence_level <= 0 or confidence_level >= 1:
-            print('Invalid confidence level. Please enter a value between 1 and 99.')
-            confidence_level = None
-    except ValueError:
-        print('Invalid input. Please enter a number between 1 and 99.')
-
-# Ask the user whether they want to calculate VaR for individual assets or for a portfolio
-calculation_type = input('Do you want to calculate VaR for individual assets or for a portfolio? (assets/portfolio): ')
-while calculation_type not in ['assets', 'portfolio']:
-    calculation_type = input('Invalid input. Please enter "assets" or "portfolio": ')
-
-# Prompt the user for asset tickers until at least one valid one is provided
+asset_tickers = None
 while asset_tickers is None:
     asset_tickers = input('Specify the asset ticker symbols (comma-separated): ')
     assets = validate_assets(asset_tickers, start_date)
@@ -90,9 +81,9 @@ while asset_tickers is None:
         asset_tickers = None
 
 # If calculating VaR for a portfolio, gather asset weights
+asset_weights = {}
 if calculation_type == 'portfolio':
     while True:
-        # Initialize a variable to keep track of the total weight
         total_weight = 0
         for ticker in assets.keys():
             while True:
@@ -131,7 +122,6 @@ if calculation_type == 'assets':
 
 # Calculate the VaR for the given portfolio if portfolio was selected
 if calculation_type == 'portfolio':
-    # Initialize combined_asset_data
     combined_asset_data = None
     for ticker, asset_data in assets.items():
         weighted_asset_data = asset_data * asset_weights[ticker]

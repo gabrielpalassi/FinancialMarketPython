@@ -21,20 +21,12 @@ print('\n#----------------------------------------------------------------------
 # Set the logging level for yfinance to CRITICAL to reduce noise
 logging.getLogger('yfinance').setLevel(logging.CRITICAL)
 
-# Initialize variables for start date, asset tickers and asset weights
-start_date = None
-asset_tickers = None
-asset_weights = {}
-
-# Function to validate starting date input
 def validate_date(input_date):
     try:
         # Check if the input matches the desired format (YYYY-MM-DD)
         parsed_date = datetime.strptime(input_date, '%Y-%m-%d')
-        # Ensure the year, month, and day have the correct number of digits
         year, month, day = map(str, input_date.split('-'))
         if len(year) == 4 and len(month) == 2 and len(day) == 2:
-            # Check if the parsed date is before today
             if parsed_date.date() < date.today():
                 return True
             else:
@@ -45,7 +37,17 @@ def validate_date(input_date):
     except:
         return False
 
-# Function to validate and download asset data
+start_date = None
+while start_date is None:
+    start_date = input('Please input the analysis start date (YYYY-MM-DD): ')
+    if not validate_date(start_date):
+        print('Invalid date. Please use YYYY-MM-DD format.')
+        start_date = None
+
+drawdown_type = input('Do you want the drawdown of individual assets or of the portfolio? (assets/portfolio): ')
+while drawdown_type not in ['assets', 'portfolio']:
+    drawdown_type = input('Invalid input. Please enter "assets" or "portfolio": ')
+
 def validate_assets(asset_inputs, start_date):
     assets = {}
     asset_tickers = asset_inputs.split(',')
@@ -59,19 +61,7 @@ def validate_assets(asset_inputs, start_date):
             assets[ticker] = asset_data
     return assets
 
-# Prompt the user for the start date until a valid one is provided
-while start_date is None:
-    start_date = input('Please input the analysis start date (YYYY-MM-DD): ')
-    if not validate_date(start_date):
-        print('Invalid date. Please use YYYY-MM-DD format.')
-        start_date = None
-
-# Ask the user whether they want drawdown of individual assets or of the portfolio
-drawdown_type = input('Do you want the drawdown of individual assets or of the portfolio? (assets/portfolio): ')
-while drawdown_type not in ['assets', 'portfolio']:
-    drawdown_type = input('Invalid input. Please enter "assets" or "portfolio": ')
-
-# Prompt the user for asset tickers until at least one valid one is provided
+asset_tickers = None
 while asset_tickers is None:
     asset_tickers = input('Specify the asset ticker symbols (comma-separated): ')
     assets = validate_assets(asset_tickers, start_date)
@@ -79,10 +69,10 @@ while asset_tickers is None:
         print('No valid assets found. Please enter at least one valid asset ticker symbol.')
         asset_tickers = None
 
-# If calculating drawdown_type for a portfolio, gather asset weights
+# If calculating VaR for a portfolio, gather asset weights
+asset_weights = {}
 if drawdown_type == 'portfolio':
     while True:
-        # Initialize a variable to keep track of the total weight
         total_weight = 0
         for ticker in assets.keys():
             while True:
@@ -103,7 +93,7 @@ if drawdown_type == 'portfolio':
             break
 
 #
-# Assets
+# Drawdown
 #
 
 # Calculate the maximum drawdown for each asset and store the results in a dictionary
@@ -114,13 +104,8 @@ for ticker, asset_data in assets.items():
     drawdown_max = drawdowns.min()
     max_drawdowns[ticker] = drawdown_max
 
-#
-# Portfolio
-#
-
 # Calculate the maximum drawdown of the portfolio if portfolio was selected
 if drawdown_type == 'portfolio':
-    # Initialize combined_asset_data
     combined_asset_data = None
     for ticker, asset_data in assets.items():
         weighted_asset_data = asset_data * asset_weights[ticker]
@@ -131,36 +116,28 @@ if drawdown_type == 'portfolio':
 
     combined_asset_data_max = combined_asset_data.cummax()
     combined_portfolio_drawdowns = (combined_asset_data - combined_asset_data_max) / combined_asset_data_max
-    # Add the maximum drawdown of the portfolio to the max_drawdowns dictionary
     max_drawdowns['Portfolio'] = combined_portfolio_drawdowns.min()
 
 #
 # Graph
 #
 
-# Set the style for the graph using a custom style file
 plt.style.use('./mplstyles/financialgraphs.mplstyle')
 
-# Create a subplot for the drawdown graph
 drawdown, axes = plt.subplots(figsize=(14, 8))
 
-# Plot the drawdown data for each asset on the graph if individual assets selected
 if drawdown_type == 'assets':
     for ticker, asset_data in assets.items():
         drawdowns = (asset_data - asset_data.cummax()) / asset_data.cummax()
         axes.plot(drawdowns, label=ticker)
-
-# Calculate and plot the drawdown of the portfolio if selected
 elif drawdown_type == 'portfolio':
     axes.plot(combined_portfolio_drawdowns, label='Portfolio')
 
-# Format the axis and the title
 axes.yaxis.set_major_formatter(mplticker.PercentFormatter(1.0))
 plt.xlabel('Time')
 plt.ylabel('Drawdown')
 axes.set_title('Drawdown x Time')
 
-# Add a legend to the graph with the maximum drawdown values for each asset and the portfolio
 legend_text = '\n'.join([f'{ticker}: {max_drawdown:.2%}' for ticker, max_drawdown in max_drawdowns.items()]) + '\n'
 plt.legend(title=f'Max. Drawdowns:\n\n{legend_text}')
 
@@ -173,5 +150,4 @@ def on_add(sel):
     sel.annotation.arrow_patch.set_color('white')
     sel.annotation.arrow_patch.set_arrowstyle('-')
 
-# Display the graph
 plt.show()
