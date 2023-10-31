@@ -141,13 +141,13 @@ if calculation_type == 'return':
 sharpe_ratio_optimal_weights = optimize.minimize(lambda weights: metrics(weights)[2] * -1, initial_guess, method='SLSQP', bounds=bounds, constraints=constraints).x
 
 if calculation_type == 'risk':
-    # Use the minimize function to find optimal weights that maximize return (minimize return * -1)
+    # Find optimal weights that maximize return (minimize return * -1)
     constraints.append({'type': 'ineq', 'fun': lambda weights: risk_tolerance - metrics(weights)[1]})
     optimal_weights = optimize.minimize(lambda weights: metrics(weights)[0] * -1, initial_guess, method='SLSQP', bounds=bounds, constraints=constraints).x
 
 
 elif calculation_type == 'return':
-    # Use the minimize function to find optimal weights that minimize risk
+    # Find optimal weights that minimize risk
     constraints.append({'type': 'eq', 'fun': lambda weights: metrics(weights)[0] - expected_return})
     optimal_weights = optimize.minimize(lambda weights: metrics(weights)[1], initial_guess, method='SLSQP', bounds=bounds, constraints=constraints).x
 
