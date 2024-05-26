@@ -42,13 +42,6 @@ def validate_date(input_date):
     except:
         return False
 
-start_date = None
-while start_date is None:
-    start_date = input('Please input the analysis start date (YYYY-MM-DD): ')
-    if not validate_date(start_date):
-        print('Invalid date. Please use YYYY-MM-DD format.')
-        start_date = None
-
 def validate_ma(input_ma):
     try:
         ma = int(input_ma)
@@ -56,6 +49,13 @@ def validate_ma(input_ma):
             return True
     except:
         return False
+
+start_date = None
+while start_date is None:
+    start_date = input('Please input the analysis start date (YYYY-MM-DD): ')
+    if not validate_date(start_date):
+        print('Invalid date. Please use YYYY-MM-DD format.')
+        start_date = None
 
 ma_months = None
 while ma_months is None:
@@ -79,11 +79,11 @@ cdi_daily_returns = cdi_data / 100
 
 
 cdi_cumulative_daily_returns = (1 + cdi_daily_returns).cumprod()
-cdi_month_closing = cdi_cumulative_daily_returns.resample('M').last()
-cdi_returns = cdi_cumulative_daily_returns.resample('M').last().pct_change().dropna()
+cdi_month_closing = cdi_cumulative_daily_returns.resample('ME').last()
+cdi_returns = cdi_cumulative_daily_returns.resample('ME').last().pct_change().dropna()
 
 # Calculate returns for the first month (missing with the previous method)
-cdi_month_opening = cdi_cumulative_daily_returns.resample('M').first()
+cdi_month_opening = cdi_cumulative_daily_returns.resample('ME').first()
 first_month_cdi_returns = (cdi_month_closing.iloc[0] - cdi_month_opening.iloc[0]) / cdi_month_opening.iloc[0]
 
 #
@@ -103,12 +103,14 @@ ibov = ibov.sort_index(ascending=True)
 ibov_ma.index = pd.to_datetime(ibov_ma.index)
 ibov_ma = ibov_ma.sort_index(ascending=True)
 
-ibov_month_closing = ibov.resample('M').last()
-ibov_ma_month_closing = ibov_ma.resample('M').last()
-ibov_returns = ibov.resample('M').last().pct_change().dropna()
+ibov_month_closing = ibov.resample('ME').last()
+ibov_ma_month_closing = ibov_ma.resample('ME').last()
+ibov_returns = ibov.resample('ME').last().pct_change().dropna()
+
+print(ibov_returns)
 
 # Calculate returns for the first month (missing previously)
-ibov_month_opening = ibov.resample('M').first()
+ibov_month_opening = ibov.resample('ME').first()
 first_month_ibov_returns = (ibov_month_closing.iloc[0] - ibov_month_opening.iloc[0]) / ibov_month_opening.iloc[0]
 
 #

@@ -38,6 +38,19 @@ def validate_date(input_date):
     except:
         return False
 
+def validate_assets(asset_inputs, start_date):
+    assets = {}
+    asset_tickers = asset_inputs.split(',')
+    for ticker in asset_tickers:
+        # Remove leading/trailing spaces
+        ticker = ticker.strip() 
+        # Download asset data using yfinance
+        asset_data = yf.download(ticker, start_date)['Adj Close']
+        if len(asset_data) > 0:
+            # Store asset data if successfully downloaded
+            assets[ticker] = asset_data
+    return assets
+
 start_date = None
 while start_date is None:
     start_date = input('Please input the analysis start date (YYYY-MM-DD): ')
@@ -58,19 +71,6 @@ while confidence_level is None:
 calculation_type = input('Do you want to calculate VaR for individual assets or for a portfolio? (assets/portfolio): ')
 while calculation_type not in ['assets', 'portfolio']:
     calculation_type = input('Invalid input. Please enter "assets" or "portfolio": ')
-
-def validate_assets(asset_inputs, start_date):
-    assets = {}
-    asset_tickers = asset_inputs.split(',')
-    for ticker in asset_tickers:
-        # Remove leading/trailing spaces
-        ticker = ticker.strip() 
-        # Download asset data using yfinance
-        asset_data = yf.download(ticker, start_date)['Adj Close']
-        if len(asset_data) > 0:
-            # Store asset data if successfully downloaded
-            assets[ticker] = asset_data
-    return assets
 
 asset_tickers = None
 while asset_tickers is None:

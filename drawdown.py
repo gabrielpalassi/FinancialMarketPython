@@ -37,17 +37,6 @@ def validate_date(input_date):
     except:
         return False
 
-start_date = None
-while start_date is None:
-    start_date = input('Please input the analysis start date (YYYY-MM-DD): ')
-    if not validate_date(start_date):
-        print('Invalid date. Please use YYYY-MM-DD format.')
-        start_date = None
-
-drawdown_type = input('Do you want the drawdown of individual assets or of the portfolio? (assets/portfolio): ')
-while drawdown_type not in ['assets', 'portfolio']:
-    drawdown_type = input('Invalid input. Please enter "assets" or "portfolio": ')
-
 def validate_assets(asset_inputs, start_date):
     assets = {}
     asset_tickers = asset_inputs.split(',')
@@ -60,6 +49,17 @@ def validate_assets(asset_inputs, start_date):
             # Store asset data if successfully downloaded
             assets[ticker] = asset_data
     return assets
+
+start_date = None
+while start_date is None:
+    start_date = input('Please input the analysis start date (YYYY-MM-DD): ')
+    if not validate_date(start_date):
+        print('Invalid date. Please use YYYY-MM-DD format.')
+        start_date = None
+
+drawdown_type = input('Do you want the drawdown of individual assets or of the portfolio? (assets/portfolio): ')
+while drawdown_type not in ['assets', 'portfolio']:
+    drawdown_type = input('Invalid input. Please enter "assets" or "portfolio": ')
 
 asset_tickers = None
 while asset_tickers is None:
