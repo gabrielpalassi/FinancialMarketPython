@@ -132,7 +132,7 @@ plt.plot(cumulative_portfolio_returns.index, cumulative_portfolio_returns, label
 
 # Plot cumulative returns for each asset
 for ticker, cum_returns in asset_cumulative_returns.items():
-    plt.plot(cum_returns.index, cum_returns, label=f'{ticker}', linestyle='--')
+    plt.plot(cum_returns.index, cum_returns, label=f'{ticker}', alpha=0.3)
 
 plt.xlabel('Date')
 plt.ylabel('Returns')
@@ -150,8 +150,6 @@ def on_add(sel):
     sel.annotation.get_bbox_patch().set_edgecolor('gray')
     sel.annotation.arrow_patch.set_color('white')
     sel.annotation.arrow_patch.set_arrowstyle('-')
-
-plt.savefig('./docs/images/portfolio-backtest.png')
 
 # Show the plot
 plt.show()
