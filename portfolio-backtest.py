@@ -135,14 +135,12 @@ for ticker, cum_returns in asset_cumulative_returns.items():
     plt.plot(cum_returns.index, cum_returns, label=f'{ticker}', linestyle='--')
 
 plt.xlabel('Date')
-plt.ylabel('Cumulative Returns')
+plt.ylabel('Returns')
 plt.title('Portfolio and Asset Cumulative Returns Over Time')
 plt.legend()
-plt.grid(True)
 
-# Format the x-axis to show dates clearly
-plt.gca().xaxis.set_major_locator(mplticker.MaxNLocator(10))
-plt.gcf().autofmt_xdate()
+# Format y-axis tick labels as percentages
+plt.gca().yaxis.set_major_formatter(mplticker.PercentFormatter(1.0))
 
 # Enable cursor interaction on the graph
 cursor = mplcursors.cursor()
@@ -152,6 +150,8 @@ def on_add(sel):
     sel.annotation.get_bbox_patch().set_edgecolor('gray')
     sel.annotation.arrow_patch.set_color('white')
     sel.annotation.arrow_patch.set_arrowstyle('-')
+
+plt.savefig('./docs/images/portfolio-backtest.png')
 
 # Show the plot
 plt.show()
