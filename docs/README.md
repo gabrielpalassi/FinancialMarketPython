@@ -4,10 +4,10 @@ Python programs tailored specifically for the world of financial markets, invest
 
 ## Getting Started
 
-To use the programs in this repository, you'll need Python and a few Python libraries installed for each individual program. After having python installed you can install the required libraries as follows:
+To use the programs in this repository, you'll need Python and a few libraries installed. After having python installed you can install the required libraries as follows:
 
-```
-pip install library_name
+```bash
+pip install -r requirements.txt
 ```
 
 ### Running

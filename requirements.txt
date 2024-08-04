@@ -1,0 +1,10 @@
+cycler==0.12.1
+matplotlib==3.8.4
+mplcursors==0.5.3
+numpy==1.26.4
+pandas==2.2.1
+pandas_ta==0.3.14b0
+python-bcb==0.2.0
+python-dateutil==2.9.0.post0
+scipy==1.13.0
+yfinance==0.2.37
