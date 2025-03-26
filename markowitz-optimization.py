@@ -39,30 +39,53 @@ def validate_date(input_date):
                 print('The start date should be before today\'s date.')
                 return False
         else:
+            print('Invalid date format. Please use YYYY-MM-DD format.')
             return False
     except:
+        print('Invalid date format. Please use YYYY-MM-DD format.')
         return False
 
 def validate_assets(asset_inputs, start_date):
     assets = {}
     asset_tickers = asset_inputs.split(',')
+
+    # Check if the input is more than one asset
+    if len(asset_tickers) == 1:
+        print('Error: Please enter at least two valid asset ticker symbols.')
+        return pd.DataFrame()
+
     for ticker in asset_tickers:
         # Remove leading/trailing spaces
-        ticker = ticker.strip() 
+        ticker = ticker.strip()
         # Download asset data using yfinance
-        asset_data = yf.download(ticker, start_date)['Adj Close']
-        if len(asset_data) > 0:
-            # Store asset data if successfully downloaded
-            assets[ticker] = asset_data
+        asset_data = yf.download(ticker, start_date, auto_adjust=False)['Adj Close']
+        if not asset_data.empty:
+            # Convert DataFrame to Series
+            assets[ticker] = asset_data.squeeze()
+        else:
+            print(f"Error: No data found for ticker '{ticker}'.")
+            return pd.DataFrame()
 
-    assets = pd.DataFrame(assets)
-    return assets
+    if not assets:
+        print("Error: No valid assets found. Please enter at least two valid asset ticker symbol.")
+        return pd.DataFrame()
+
+    # Convert the dictionary to a DataFrame
+    assets_df = pd.DataFrame(assets)
+
+    # Drop rows with missing values to ensure data for all dates
+    assets_df.dropna(inplace=True)
+
+    if assets_df.empty:
+        print("Error: No overlapping data found for the selected assets. Please choose different tickers or a different date range.")
+        return pd.DataFrame()
+
+    return assets_df
 
 start_date = None
 while start_date is None:
     start_date = input('Please input the analysis start date (YYYY-MM-DD): ')
     if not validate_date(start_date):
-        print('Invalid date. Please use YYYY-MM-DD format.')
         start_date = None
 
 asset_tickers = None
@@ -70,7 +93,6 @@ while asset_tickers is None:
     asset_tickers = input('Specify the asset ticker symbols (comma-separated): ')
     assets = validate_assets(asset_tickers, start_date)
     if assets.empty:
-        print('No valid assets found. Please enter at least one valid asset ticker symbol.')
         asset_tickers = None
 
 log_returns = np.log(assets / assets.shift(1))
